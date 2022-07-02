@@ -37,7 +37,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [
 INSTALLED_APPS = [
     # my apps
     'accounts.apps.AccountsConfig',
-    'blog.apps.BlogConfig',
+    #'blog.apps.BlogConfig',
 
     # Django apps
     'django.contrib.admin',
@@ -130,3 +130,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# user manager settings
+AUTH_USER_MODEL = 'accounts.User'
