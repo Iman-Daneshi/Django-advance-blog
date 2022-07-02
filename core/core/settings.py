@@ -35,6 +35,11 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [
 # Application definition
 
 INSTALLED_APPS = [
+    # my apps
+    'accounts.apps.AccountsConfig',
+    'blog.apps.BlogConfig',
+
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
