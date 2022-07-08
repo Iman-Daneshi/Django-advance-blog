@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from .models import User, Profile
 
 # Register your models here.
+
 
 class CustomUserAdmin(UserAdmin):
     model = User
@@ -23,16 +24,24 @@ class CustomUserAdmin(UserAdmin):
                 'is_staff', 'is_active', 'is_superuser',
             ),
         }),
+        ('Group Permissions', {
+            "fields": (
+                'groups', 'user_permissions',
+            ),
+        }),
+        ('Important Date', {
+            "fields": (
+                'last_login',
+            ),
+        }),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active', 'is_superuser')}
-        ),
+         ),
     )
-    
+
 
 admin.site.register(Profile)
 admin.site.register(User, CustomUserAdmin)
-
-
