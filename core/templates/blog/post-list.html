@@ -5,6 +5,7 @@
     <div>
         {% for post in post_list %}
             <a href="{% url 'blog:post-detail' post.pk %}"><h1>{{ post.title }}</h1></a>
+            <a href="{% url 'blog:post-update' post.pk %}"><h5>Edit</h5></a>
             <h2>{{ post.author }}</h2>
             <p>{{ post.published_date }}</p>
         {% endfor %}
