@@ -5,7 +5,7 @@
   <a href="{% url 'blog:post-update' post.pk %}"><h5>Edit</h5></a>
   <a href="{% url 'blog:post-delete' post.pk %}"><h5>Delete</h5></a>
 
-  <h2>{{ post.author }}</h2>
+  <h2>{{ post.author.first_name }} {{ post.author.last_name }}</h2>
   <p>{{ post.published_date }}</p>
   {% endfor %}
 </div>
