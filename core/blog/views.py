@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
-from django.views.generic import (ListView, DetailView, CreateView, 
-                                UpdateView, DeleteView,)
+from django.views.generic import (ListView, DetailView, CreateView,
+                                  UpdateView, DeleteView,)
 from django.views.generic.edit import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .models import Post
 from .forms import PostForm
 
 # Create your views here.
+
+
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -24,7 +27,9 @@ class RedirectToMaktabkhooneh(RedirectView):
 class RedirectToindex(RedirectView):
     pattern_name = 'blog:index'
 
-class PostListView(ListView):
+
+class PostListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = 'blog.view_post'
     queryset = Post.objects.filter(status=1)
     # model = Post
     template_name = 'blog/post-list.html'
@@ -37,9 +42,11 @@ class PostListView(ListView):
     #     posts = Post.objects.filter(status=1)
     #     return posts
 
-class PostDetailView(DetailView):
+
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'blog/post-detail.html'
+
 
 '''
 class PostCreateView(FormView):
@@ -51,7 +58,9 @@ class PostCreateView(FormView):
         form.save()
         return super().form_valid(form)
 '''
-class PostCreateView(CreateView):
+
+
+class PostCreateView( LoginRequiredMixin, CreateView):
     model = Post
     # fields = ['author', 'title', 'content',
     #           'category', 'status', 'published_date'
@@ -63,12 +72,13 @@ class PostCreateView(CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class PostUpdateView(UpdateView):
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = '/blog/post/'
