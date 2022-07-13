@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'blog.apps.BlogConfig',
 
+    'rest_framework', 
+
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
