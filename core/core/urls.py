@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('blog/', include('blog.urls')),
+    # REST framework login and logout paths
+    path('api-auth/', include('rest_framework.urls')),
 ]
 # serving static files and  media files for development
 if settings.DEBUG:
