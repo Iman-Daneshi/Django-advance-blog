@@ -11,5 +11,5 @@ urlpatterns = [
     #path('post/', post_list, name='post-list'),
     #path('post/<int:id>', post_detail, name='post-list'),
     path('post/', PostList.as_view(), name='post-list'),
-    path('post/<int:id>', PostDetail.as_view(), name='post-list'),
+    path('post/<int:pk>', PostDetail.as_view(), name='post-list'),
 ]

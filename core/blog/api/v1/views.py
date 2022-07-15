@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import mixins
 from rest_framework import status
 from rest_framework.views import APIView
 from ...models import Post
@@ -40,6 +42,7 @@ def post_detail(request, id):
         post.delete()
         return Response({'detail':'The post is removed'}, status=status.HTTP_204_NO_CONTENT)'''
 
+"""
 class PostList(APIView):
     ''' Getting a list of posts and creating new post'''
     permission_classes = [IsAuthenticated]
@@ -57,8 +60,32 @@ class PostList(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+"""
 
 
+"""create a custom Postlist view
+class PostList(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin  ):
+    ''' Getting a list of posts and creating new post'''
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create (request, *args, **kwargs)
+        """
+
+
+class PostList(ListCreateAPIView):
+    ''' Getting a list of posts and creating new post'''
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+
+"""
 class PostDetail(APIView):
     ''' a class for displaying, updating, and editing a single post '''
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -81,3 +108,13 @@ class PostDetail(APIView):
         post = get_object_or_404(Post, pk=id, status=True)
         post.delete()
         return Response({'detail': 'The post is removed'}, status=status.HTTP_204_NO_CONTENT)
+"""
+
+
+class PostDetail(RetrieveUpdateDestroyAPIView):
+    ''' a class for displaying, updating, and editing a single post '''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+    
