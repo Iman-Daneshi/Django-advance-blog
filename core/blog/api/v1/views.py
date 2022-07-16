@@ -5,8 +5,9 @@ from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveU
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.views import APIView
-from ...models import Post
-from .serializers import PostSerializer
+from rest_framework import viewsets
+from ...models import Post, Category
+from .serializers import PostSerializer, CategorySerializer
 
 '''
 from rest_framework.decorators import api_view, permission_classes
@@ -77,14 +78,6 @@ class PostList(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin  )
         return self.create (request, *args, **kwargs)
         """
 
-
-class PostList(ListCreateAPIView):
-    ''' Getting a list of posts and creating new post'''
-    permission_classes = [IsAuthenticated]
-    serializer_class = PostSerializer
-    queryset = Post.objects.filter(status=True)
-
-
 """
 class PostDetail(APIView):
     ''' a class for displaying, updating, and editing a single post '''
@@ -111,10 +104,74 @@ class PostDetail(APIView):
 """
 
 
+class PostList(ListCreateAPIView):
+    ''' Getting a list of posts and creating new post'''
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+
 class PostDetail(RetrieveUpdateDestroyAPIView):
     ''' a class for displaying, updating, and editing a single post '''
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
 
-    
+
+'''
+class PostViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+
+    def list(self, request):
+        queryset = Post.objects.filter(status=True)
+        serializer = self.serializer_class(queryset, many = True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        #queryset = Post.objects.filter(status=True)
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Post.objects.filter(status=True)
+        post_object = get_object_or_404(queryset, pk=pk)
+        serializer = self.serializer_class(post_object)
+        return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        queryset = Post.objects.filter(status=True)
+        post_object = get_object_or_404(queryset, pk=pk)
+        serializer = self.serializer_class(post_object, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def partial_update(self, request, pk=None):
+        queryset = Post.objects.filter(status=True)
+        post_object = get_object_or_404(queryset, pk=pk)
+        serializer = self.serializer_class(post_object, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def destroy(self, request, pk=None):
+        #queryset = Post.objects.filter(status=True)
+        post = get_object_or_404(Post, pk=pk, status=True)
+        post.delete()
+        return Response({'detail': 'The post is removed'}, status=status.HTTP_204_NO_CONTENT)
+'''
+
+
+class PostModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+
+class CategoryModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
