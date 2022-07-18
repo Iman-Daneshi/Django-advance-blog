@@ -8,7 +8,7 @@ from .views import (# post_list,
 from rest_framework.routers import DefaultRouter
 
 
-app_name = "blog"
+app_name = "api-v1"
 
 router = DefaultRouter()
 router.register('post', PostModelViewSet, basename='post')
