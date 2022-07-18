@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.decorators import action
 from rest_framework import mixins
 from rest_framework import status
@@ -10,6 +12,7 @@ from rest_framework import viewsets
 from ...models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
 from .permissions import IsOwnerOrReadOnly
+from .paginations import DefaultPagination
 
 '''
 from rest_framework.decorators import api_view, permission_classes
@@ -105,8 +108,7 @@ class PostDetail(APIView):
         return Response({'detail': 'The post is removed'}, status=status.HTTP_204_NO_CONTENT)
 """
 
-
-class PostList(ListCreateAPIView):
+"""class PostList(ListCreateAPIView):
     ''' Getting a list of posts and creating new post'''
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
@@ -118,9 +120,9 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
+"""
 
-
-'''
+"""
 class PostViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
@@ -164,14 +166,20 @@ class PostViewSet(viewsets.ViewSet):
         post = get_object_or_404(Post, pk=pk, status=True)
         post.delete()
         return Response({'detail': 'The post is removed'}, status=status.HTTP_204_NO_CONTENT)
-'''
+"""
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
+    pagination_class = DefaultPagination
     queryset = Post.objects.filter(status=True)
-    
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['category', 'author', 'status']
+    search_fields = ['title', 'content', '$category__name']        # '$' is a Regex search: showing similar things to what user has searched
+    ordering_fields = ['published_date']
+
+
     @action(methods=['get'], detail=False)
     def get_ok(self, request):
         return Response({'detail':'Ok'})

@@ -1,8 +1,8 @@
 from django.urls import path, include
 from .views import (# post_list,
                      #post_detail,
-                      PostList,
-                      PostDetail,
+                      #PostList,
+                      #PostDetail,
                       PostModelViewSet,
                       CategoryModelViewSet)
 from rest_framework.routers import DefaultRouter
