@@ -175,7 +175,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     pagination_class = DefaultPagination
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['category', 'author', 'status']
+    filterset_fields = {'category':['exact','in'], 'author':['exact'], 'status':['exact']}
     search_fields = ['title', 'content', '$category__name']        # '$' is a Regex search: showing similar things to what user has searched
     ordering_fields = ['published_date']
 

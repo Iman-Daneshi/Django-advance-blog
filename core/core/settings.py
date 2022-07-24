@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY',)
 '''django-insecure-_c%93teo$6!#szg^_l%4-9jjq!x9!0ek%l*4q0&=hp=@raoli)'''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =config("DEBUG", cast=bool)
+DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [
                        s.strip() for s in v.split(',')], default="*")
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
 
     # Django apps
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +69,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates',],
+        'DIRS': [BASE_DIR / 'templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,4 +154,9 @@ LOGIN_REDIRECT_URL = '/blog/post/'
 # Restframework settings
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    }
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
