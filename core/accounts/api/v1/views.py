@@ -11,7 +11,8 @@ from .serializers import (RegistrationSerializer, CustomAuthTokenSerializer,
                         CustomTokenObtainPairSerializer, ChangePasswordSerializer, ProfileSerializer)
 from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.models import Profile
-from django.core.mail import send_mail
+#from django.core.mail import send_mail
+from mail_templated import send_mail
 
 User = get_user_model()
 class RegistrationApiView(generics.GenericAPIView):
@@ -87,14 +88,8 @@ class ProfileAPIView(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
 
-class TestEmailSend(generics.GenericAPIView):
+class TestEmailSend(generics.GenericAPIView): 
     
     def get(self, request, *args, **kwargs):
-        send_mail(
-            'Subject here',
-            'Here is the message.',
-            'from@example.com',
-            ['to@example.com'],
-            fail_silently=False,
-        )
+        send_mail('email/hello.tpl', {'name': 'ali'}, 'admin@email.com', ['iman@email.com'])
         return Response({'detail':"email send"})
