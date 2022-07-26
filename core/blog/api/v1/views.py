@@ -1,7 +1,15 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import (
+    GenericAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.decorators import action
@@ -9,12 +17,13 @@ from rest_framework import mixins
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import viewsets
+
 from ...models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
 from .permissions import IsOwnerOrReadOnly
 from .paginations import DefaultPagination
 
-'''
+"""
 from rest_framework.decorators import api_view, permission_classes
 
 @api_view(['GET', 'POST'])
@@ -28,9 +37,9 @@ def post_list(request):
         serializer = PostSerializer(data = request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)'''
+        return Response(serializer.data)"""
 
-'''@api_view(["GET", "PUT", "DELETE"])
+"""@api_view(["GET", "PUT", "DELETE"])
 @permission_classes([IsAuthenticated])
 def post_detail(request, id):
     post = get_object_or_404(Post, pk=id, status=True)
@@ -46,7 +55,7 @@ def post_detail(request, id):
 
     elif request.method == "DELETE":
         post.delete()
-        return Response({'detail':'The post is removed'}, status=status.HTTP_204_NO_CONTENT)'''
+        return Response({'detail':'The post is removed'}, status=status.HTTP_204_NO_CONTENT)"""
 
 """
 class PostList(APIView):
@@ -175,15 +184,18 @@ class PostModelViewSet(viewsets.ModelViewSet):
     pagination_class = DefaultPagination
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {'category': ['exact', 'in'], 'author': [
-        'exact'], 'status': ['exact']}
+    filterset_fields = {
+        "category": ["exact", "in"],
+        "author": ["exact"],
+        "status": ["exact"],
+    }
     # '$' is a Regex search: showing similar things to what user has searched
-    search_fields = ['title', 'content', '$category__name']
-    ordering_fields = ['published_date']
+    search_fields = ["title", "content", "$category__name"]
+    ordering_fields = ["published_date"]
 
-    @action(methods=['get'], detail=False)
+    @action(methods=["get"], detail=False)
     def get_ok(self, request):
-        return Response({'detail': 'Ok'})
+        return Response({"detail": "Ok"})
 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):

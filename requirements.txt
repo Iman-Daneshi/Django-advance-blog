@@ -13,3 +13,6 @@ djoser
 
 # email third party modules
 django-mail-templated
+
+# formating and refactoring modules
+black

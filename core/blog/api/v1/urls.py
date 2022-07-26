@@ -1,18 +1,19 @@
 from django.urls import path, include
-from .views import (# post_list,
-                     #post_detail,
-                      #PostList,
-                      #PostDetail,
-                      PostModelViewSet,
-                      CategoryModelViewSet)
+from .views import (  # post_list,
+    # post_detail,
+    # PostList,
+    # PostDetail,
+    PostModelViewSet,
+    CategoryModelViewSet,
+)
 from rest_framework.routers import DefaultRouter
 
 
 app_name = "api-v1"
 
 router = DefaultRouter()
-router.register('post', PostModelViewSet, basename='post')
-router.register('category', CategoryModelViewSet, basename='category')
+router.register("post", PostModelViewSet, basename="post")
+router.register("category", CategoryModelViewSet, basename="category")
 urlpatterns = router.urls
 
 # urlpatterns = [
