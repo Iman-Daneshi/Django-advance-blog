@@ -16,3 +16,4 @@ django-mail-templated
 
 # formating and refactoring modules
 black
+flack8

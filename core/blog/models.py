@@ -17,7 +17,7 @@ class Post(models.Model):
     author = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     content = models.TextField()
-    category = models.ManyToManyField("Category", blank=True, null=True)
+    category = models.ManyToManyField("Category", blank=True)
     status = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
