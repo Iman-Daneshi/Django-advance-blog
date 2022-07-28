@@ -1,6 +1,5 @@
 from datetime import datetime
 from django.test import TestCase
-from django.contrib.auth import get_user_model
 
 from ..models import Post, Category
 from accounts.models import User, Profile
@@ -43,6 +42,6 @@ class TestPostModels(TestCase):
             status=True,
             published_date=datetime.now(),
         )
-        post.category.set([category_object1, category_object12]) 
+        post.category.set([category_object1, category_object12])
         self.assertNotEqual(post.title, "test")
         self.assertTrue(Post.objects.filter(pk=post.id).exists())

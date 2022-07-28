@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.models import Profile
 
 # from django.core.mail import send_mail
-from mail_templated import send_mail
+# from mail_templated import send_mail
 from mail_templated import EmailMessage
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token

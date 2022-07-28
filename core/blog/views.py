@@ -1,4 +1,4 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic import (
     ListView,
@@ -7,7 +7,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from django.views.generic.edit import FormView
+# from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .models import Post
@@ -51,7 +51,7 @@ class PostListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
 
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
-    #template_name = "blog/post-detail.html"
+    # template_name = "blog/post-detail.html"
 
 
 """

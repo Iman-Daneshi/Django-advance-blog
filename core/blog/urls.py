@@ -3,7 +3,7 @@ from .views import (
     IndexView,
     PostUpdateView,
     RedirectToMaktabkhooneh,
-    Post,
+    # Post,
     RedirectToindex,
     PostListView,
     PostDetailView,

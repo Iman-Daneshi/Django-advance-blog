@@ -5,7 +5,6 @@ from datetime import datetime
 from accounts.models import User
 
 
-
 @pytest.fixture
 def api_client():
     client = APIClient()
@@ -47,7 +46,7 @@ class TestPostApi:
             "published_date": datetime.now()
         }
         user = common_user
-        #api_client.force_login(user=user)
+        # api_client.force_login(user=user)
         api_client.force_authenticate(user=user)
         response = api_client.post(url, data)
         assert response.status_code == 201
@@ -57,10 +56,9 @@ class TestPostApi:
         data = {
             "title": "test",
             "content": "description",
-            
         }
         user = common_user
-        #api_client.force_login(user=user)
+        # api_client.force_login(user=user)
         api_client.force_authenticate(user=user)
         response = api_client.post(url, data)
         assert response.status_code == 400
