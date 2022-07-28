@@ -1,42 +1,66 @@
 from rest_framework.test import APIClient
-from datetime import datetime
 from django.urls import reverse
 import pytest
-from accounts.models import User, Profile
-from blog.models import Post
+from datetime import datetime
+from accounts.models import User
 
 
-@pytest.mark.django_db     # allow pytest to have access to db
-class TestPostApi():
+
+@pytest.fixture
+def api_client():
     client = APIClient()
-    """user = User.objects.create_user(
-        email="iman@email.com", password="testpass123"
-    )
-    profile = Profile.objects.create(
-        user=user,
-        first_name="iman",
-        last_name="daneshi",
-        description="goodwriter",
-    )
-    post = Post.objects.create(
-        title="test",
-        author=profile,
-        content="description",
-        status=True,
-        published_date=datetime.now(),
-    )"""
-    def test_get_post_response_200_status(self):
-        url = reverse('blog:api-v1:post-list')
-        respose = self.client.get(url)
-        assert respose.status_code == 200
+    return client
 
-    def test_create_post_response_401_status(self):
-        url = reverse('blog:api-v1:post-list')
+
+@pytest.fixture
+def common_user():
+    user = User.objects.create_user(
+        email="iman@email.com", password="Iman@1370", is_verified=True
+    )
+    return user
+
+
+@pytest.mark.django_db
+class TestPostApi:
+    def test_get_post_response_200_status(self, api_client):
+        url = reverse("blog:api-v1:post-list")
+        response = api_client.get(url)
+        assert response.status_code == 200
+
+    def test_create_post_response_401_status(self, api_client):
+        url = reverse("blog:api-v1:post-list")
         data = {
-            "title" : "test",
-            "content":"description",
-            "status" : True,
-            "published_date":datetime.now(),
+            "title": "test",
+            "content": "description",
+            "status": True,
+            "published_date": datetime.now(),
         }
-        response = self.client.post(url,data)
+        response = api_client.post(url, data)
         assert response.status_code == 401
+
+    def test_create_post_response_201_status(self, api_client, common_user):
+        url = reverse("blog:api-v1:post-list")
+        data = {
+            "title": "test",
+            "content": "description",
+            "status": True,
+            "published_date": datetime.now()
+        }
+        user = common_user
+        #api_client.force_login(user=user)
+        api_client.force_authenticate(user=user)
+        response = api_client.post(url, data)
+        assert response.status_code == 201
+
+    def test_create_post_invalid_data_response_400_status(self, api_client, common_user):
+        url = reverse("blog:api-v1:post-list")
+        data = {
+            "title": "test",
+            "content": "description",
+            
+        }
+        user = common_user
+        #api_client.force_login(user=user)
+        api_client.force_authenticate(user=user)
+        response = api_client.post(url, data)
+        assert response.status_code == 400
