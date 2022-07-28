@@ -16,6 +16,6 @@ django-mail-templated
 
 # formating and refactoring modules
 black
-flack8
+flake8
 pytest
 pytest-django
