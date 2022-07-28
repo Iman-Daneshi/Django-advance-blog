@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0003_alter_post_author'),
+        ("blog", "0003_alter_post_author"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='category',
-            field=models.ManyToManyField(blank=True, to='blog.Category'),
+            model_name="post",
+            name="category",
+            field=models.ManyToManyField(blank=True, to="blog.Category"),
         ),
     ]
