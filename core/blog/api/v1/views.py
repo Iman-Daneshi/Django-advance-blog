@@ -2,9 +2,9 @@ from rest_framework.permissions import (
     IsAuthenticated,
     # IsAdminUser,
     IsAuthenticatedOrReadOnly,
-    IsAdminUser,
+    # IsAdminUser,
 )
-from rest_framework.response import Response
+
 # from rest_framework.generics import (
 #     GenericAPIView,
 #     ListCreateAPIView,
@@ -12,7 +12,7 @@ from rest_framework.response import Response
 # )
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.decorators import action
+
 # from rest_framework import mixins
 # from rest_framework import status
 # from rest_framework.views import APIView
@@ -22,7 +22,8 @@ from ...models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
 from .permissions import IsOwnerOrReadOnly
 from .paginations import DefaultPagination
-from .filters import PostFilters
+# from .filters import PostFilters
+
 """
 from rest_framework.decorators import api_view, permission_classes
 
@@ -179,21 +180,16 @@ class PostViewSet(viewsets.ViewSet):
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {
-         "category": ["exact"],
-         "author": ["exact"],
-         "status": ["exact"]
-    }
-    #filterset_class = PostFilters
+    filterset_fields = {"category": ["exact"], "author": ["exact"], "status": ["exact"]}
+    # filterset_class = PostFilters
     # '$' is a Regex search: showing similar things to what user has searched
     search_fields = ["title", "content"]
     ordering_fields = ["published_date"]
     pagination_class = DefaultPagination
-
 
     # @action(methods=["get"], detail=False)
     # def get_ok(self, request):
@@ -204,4 +200,3 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-    

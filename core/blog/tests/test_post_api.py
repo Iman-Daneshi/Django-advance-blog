@@ -43,7 +43,7 @@ class TestPostApi:
             "title": "test",
             "content": "description",
             "status": True,
-            "published_date": datetime.now()
+            "published_date": datetime.now(),
         }
         user = common_user
         # api_client.force_login(user=user)
@@ -51,7 +51,9 @@ class TestPostApi:
         response = api_client.post(url, data)
         assert response.status_code == 201
 
-    def test_create_post_invalid_data_response_400_status(self, api_client, common_user):
+    def test_create_post_invalid_data_response_400_status(
+        self, api_client, common_user
+    ):
         url = reverse("blog:api-v1:post-list")
         data = {
             "title": "test",

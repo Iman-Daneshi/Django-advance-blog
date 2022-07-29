@@ -38,11 +38,11 @@ class TestBlogViews(TestCase):
 
     def test_blog_post_detail_logged_in_response(self):
         self.client.force_login(self.user)
-        url = reverse("blog:post-detail", kwargs={'pk': self.post.id})
+        url = reverse("blog:post-detail", kwargs={"pk": self.post.id})
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
 
     def test_blog_post_detail_anonymouse_response(self):
-        url = reverse("blog:post-detail", kwargs={'pk': self.post.id})
+        url = reverse("blog:post-detail", kwargs={"pk": self.post.id})
         response = self.client.get(url)
         self.assertEquals(response.status_code, 302)

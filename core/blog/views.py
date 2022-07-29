@@ -7,6 +7,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+
 # from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
