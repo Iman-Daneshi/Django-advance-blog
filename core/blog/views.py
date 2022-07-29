@@ -48,7 +48,8 @@ class PostListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     # def get_queryset(self):  # = model= queryset
     #     posts = Post.objects.filter(status=1)
     #     return posts
-
+class PostListApiView(TemplateView):
+    template_name = "blog/post-list-api.html"
 
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post

@@ -9,6 +9,7 @@ from .views import (
     PostDetailView,
     PostCreateView,
     PostDeleteView,
+    PostListApiView
 )
 
 
@@ -23,6 +24,7 @@ urlpatterns = [
     ),
     path("go-to-index/", RedirectToindex.as_view(), name="go-to-index"),
     path("post/", PostListView.as_view(), name="post-list"),
+    path("post/api/", PostListApiView.as_view(), name="post-list-api"),
     path("post/<int:pk>/", PostDetailView.as_view(), name="post-detail"),
     path("post/create/", PostCreateView.as_view(), name="post-create"),
     path("post/<int:pk>/edit/", PostUpdateView.as_view(), name="post-update"),
