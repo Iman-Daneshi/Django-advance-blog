@@ -2,6 +2,7 @@ from rest_framework.permissions import (
     IsAuthenticated,
     # IsAdminUser,
     IsAuthenticatedOrReadOnly,
+    IsAdminUser,
 )
 from rest_framework.response import Response
 # from rest_framework.generics import (
@@ -21,7 +22,7 @@ from ...models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
 from .permissions import IsOwnerOrReadOnly
 from .paginations import DefaultPagination
-
+from .filters import PostFilters
 """
 from rest_framework.decorators import api_view, permission_classes
 
@@ -178,26 +179,29 @@ class PostViewSet(viewsets.ViewSet):
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    #permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
-    pagination_class = DefaultPagination
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = {
-        "category": ["exact", "in"],
-        "author": ["exact"],
-        "status": ["exact"],
+         "category": ["exact"],
+         "author": ["exact"],
+         "status": ["exact"]
     }
+    #filterset_class = PostFilters
     # '$' is a Regex search: showing similar things to what user has searched
-    search_fields = ["title", "content", "$category__name"]
+    search_fields = ["title", "content"]
     ordering_fields = ["published_date"]
+    pagination_class = DefaultPagination
 
-    @action(methods=["get"], detail=False)
-    def get_ok(self, request):
-        return Response({"detail": "Ok"})
+
+    # @action(methods=["get"], detail=False)
+    # def get_ok(self, request):
+    #     return Response({"detail": "Ok"})
 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    

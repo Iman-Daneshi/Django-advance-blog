@@ -13,7 +13,7 @@ class PostSerializer(serializers.ModelSerializer):
     # author = serializers.CharField()
     snippet = serializers.ReadOnlyField(source="get_snippet")
     relative_url = serializers.URLField(source="get_absolute_api_url", read_only=True)
-    absolute_url = serializers.SerializerMethodField()
+    absolute_url = serializers.SerializerMethodField(method_name="get_abs_url")
     # category = serializers.SlugRelatedField(
     #     many=True,
     #     # read_only=True,
@@ -36,11 +36,10 @@ class PostSerializer(serializers.ModelSerializer):
             "absolute_url",
             "published_date",
             "created_date",
-            "updated_date",
         ]
         read_only_fields = ["author"]
 
-    def get_absolute_url(self, obj):
+    def get_abs_url(self, obj):
         request = self.context.get("request")
         return request.build_absolute_uri(obj.pk)
 
