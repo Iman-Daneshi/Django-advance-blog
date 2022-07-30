@@ -22,3 +22,8 @@ black
 flake8
 pytest
 pytest-django
+
+# background proccess and cache
+celery
+redis
+django_celery_beat
