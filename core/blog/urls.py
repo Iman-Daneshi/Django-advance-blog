@@ -9,7 +9,7 @@ from .views import (
     PostDetailView,
     PostCreateView,
     PostDeleteView,
-    PostListApiView
+    PostListApiView,
 )
 
 

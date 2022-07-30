@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django_filters",
     "mail_templated",
     "corsheaders",
+    "django_celery_beat",
     # Django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -179,3 +180,14 @@ EMAIL_PORT = 25
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
 ]
+
+
+# celery config
+CELERY_BROKER_URL = "redis://redis:6379/1"
+
+# CELERY_BEAT_SCHEDULE = {
+#     "send_email": {
+#         'task':'accounts.task.sendemail',
+#         'schedule':5
+#     }
+# }
